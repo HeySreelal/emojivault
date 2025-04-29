@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Search, X, Heart, Sun, Moon, ArrowUp } from "lucide-react";
+import { Search, X, Heart, ArrowUp } from "lucide-react";
 import { categories, CATEGORIES, Emoji, EmojiCategory } from "./types/types";
 import { emojis as emojiData } from "./emojis/data";
 import Notification, { NotificationProps } from "./components/Notification";
@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<EmojiCategory | null>(CATEGORIES.ALL);
   const [loading, setLoading] = useState<boolean>(true);
   const [notification, setNotification] = useState<NotificationProps | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  const isDarkMode = true;
   const [showIntro, setShowIntro] = useState<boolean>(true);
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
 
@@ -65,10 +65,6 @@ const App: React.FC = () => {
     setSearchTerm("");
   }, []);
 
-  // Toggle dark mode
-  const toggleDarkMode = useCallback((): void => {
-    setIsDarkMode(prev => !prev);
-  }, []);
 
   // Scroll to top function
   const scrollToTop = useCallback((): void => {
@@ -150,16 +146,7 @@ const App: React.FC = () => {
             onSelect={setSelectedCategory}
             isDarkMode={isDarkMode}
           />
-
-          <button
-            onClick={toggleDarkMode}
-            className={`ml-4 p-3 rounded-full ${isDarkMode ? 'bg-purple-900/50 text-purple-300' : 'bg-indigo-100 text-indigo-600'} transition-colors`}
-            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </button>
         </div>
-
         {/* Notification display */}
         {notification && <Notification {...notification} />}
 
