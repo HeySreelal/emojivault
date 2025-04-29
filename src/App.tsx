@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Search, X, Heart, Sun, Moon } from "lucide-react";
+import { Search, X, Heart, Sun, Moon, ArrowUp } from "lucide-react";
 import { categories, CATEGORIES, Emoji, EmojiCategory } from "./types/types";
 import { emojis as emojiData } from "./emojis/data";
 import Notification, { NotificationProps } from "./components/Notification";
@@ -20,6 +20,7 @@ const App: React.FC = () => {
   const [notification, setNotification] = useState<NotificationProps | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Default to dark mode for luxury feel
   const [showIntro, setShowIntro] = useState<boolean>(true);
+  const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
 
   // Show notification and automatically hide it after a delay
   const showNotification = useCallback((message: string, emoji?: string): void => {
@@ -36,6 +37,17 @@ const App: React.FC = () => {
     }, 1000);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Handle scroll events to show/hide the scroll to top button
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show button when scrolled down 300px from the top
+      setShowScrollToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Handle copying emoji to clipboard
@@ -56,6 +68,14 @@ const App: React.FC = () => {
   // Toggle dark mode
   const toggleDarkMode = useCallback((): void => {
     setIsDarkMode(prev => !prev);
+  }, []);
+
+  // Scroll to top function
+  const scrollToTop = useCallback((): void => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
   }, []);
 
   // Memoize filtered emojis to prevent unnecessary recomputation
@@ -191,9 +211,43 @@ const App: React.FC = () => {
         </div>
       </main>
 
+      {/* Scroll to top button - appears when scrolled */}
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          className={`fixed bottom-8 right-8 p-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110
+            ${isDarkMode
+              ? 'bg-purple-800 hover:bg-purple-700 text-white'
+              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+            } z-50`}
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="h-5 w-5" />
+        </button>
+      )}
+
       {/* Footer */}
       <footer className={`mt-20 text-center ${isDarkMode ? 'text-gray-500' : 'text-gray-400'} text-sm p-8`}>
-        <p className="font-light tracking-widest">EMOJIVAULT • PREMIUM EXPRESSIONS • ESTABLISHED 2025</p>
+        <p className="font-light">
+          EMOJIVAULT, made with ❤️ by{" "}
+          <a
+            href="https://github.com/heysreelal"
+            className={`${isDarkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-500 hover:text-blue-600'} font-medium`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @HeySreelal
+          </a>
+          {" • "}
+          <a
+            href="https://github.com/heysreelal/emojivault"
+            className={`${isDarkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-500 hover:text-blue-600'} font-medium`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open Source
+          </a>
+        </p>
       </footer>
     </div>
   );
