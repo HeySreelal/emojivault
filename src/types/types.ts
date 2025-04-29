@@ -25,7 +25,6 @@ export const CATEGORIES = {
     OBJECTS: new EmojiCategory('📱', 'Objects'),
     SYMBOLS: new EmojiCategory('🔣', 'Symbols'),
     FLAGS: new EmojiCategory('🏴', 'Flags'),
-
 };
 
 // Generate the categories map dynamically from CATEGORIES
