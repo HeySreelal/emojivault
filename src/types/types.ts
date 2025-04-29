@@ -10,6 +10,8 @@ export const CATEGORIES = {
     GESTURES: new EmojiCategory('🫶', 'Gestures'),
     PEOPLE: new EmojiCategory('👥', 'People'),
     CLOTHING: new EmojiCategory('👚', 'Clothing & Accessories'),
+    ANIMALS: new EmojiCategory('🐱', 'Animals'),
+    NATURE: new EmojiCategory('🌿', 'Nature'),
 };
 
 // Generate the categories map dynamically from CATEGORIES
@@ -27,3 +29,5 @@ export const ES = (emoji: string, description: string): Emoji => new Emoji(emoji
 export const EG = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.GESTURES);
 export const EP = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.PEOPLE);
 export const EC = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.CLOTHING);
+export const EA = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.ANIMALS); // New shorthand method
+export const EN = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.NATURE);
