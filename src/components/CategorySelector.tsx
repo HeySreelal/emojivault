@@ -6,14 +6,12 @@ interface CategorySelectorProps {
     categories: EmojiCategory[];
     selectedCategory: EmojiCategory | null;
     onSelect: (categoryId: EmojiCategory | null) => void;
-    isDarkMode: boolean;
 }
 
 const CategorySelector: React.FC<CategorySelectorProps> = ({
     categories,
     selectedCategory,
     onSelect,
-    isDarkMode
 }) => {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -36,10 +34,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
             {/* Left chevron */}
             <button
                 onClick={() => scroll('left')}
-                className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md 
-                    ${isDarkMode
-                        ? 'bg-gray-800 text-gray-200 hover:bg-gray-700'
-                        : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md bg-gray-800 text-gray-200 hover:bg-gray-700`}
                 aria-label="Scroll left"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -62,12 +57,8 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                                 onClick={() => onSelect(category)}
                                 className={`whitespace-nowrap px-6 py-3 rounded-full text-sm font-light tracking-wide transition-all duration-300
                                     ${isSelected
-                                        ? isDarkMode
-                                            ? 'bg-gradient-to-r from-purple-800 to-indigo-700 text-white shadow-lg shadow-purple-600/20'
-                                            : 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
-                                        : isDarkMode
-                                            ? 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/70'
-                                            : 'bg-white/50 hover:bg-white/80 text-gray-700 border border-gray-200/50'
+                                        ? 'bg-gradient-to-r from-purple-800 to-indigo-700 text-white shadow-lg shadow-purple-600/20'
+                                        : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/70'
                                     }`}
                             >
                                 <span className="mr-2">{category.emoji}</span>
@@ -81,10 +72,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
             {/* Right chevron */}
             <button
                 onClick={() => scroll('right')}
-                className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md 
-                    ${isDarkMode
-                        ? 'bg-gray-800 text-gray-200 hover:bg-gray-700'
-                        : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md bg-gray-800 text-gray-200 hover:bg-gray-700`}
                 aria-label="Scroll right"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
