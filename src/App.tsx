@@ -107,9 +107,9 @@ const App: React.FC = () => {
     <div className={`${mainBackground} min-h-screen transition-colors duration-500 p-4 md:p-6`}>
       {/* Header with luxury branding */}
       <header className="max-w-7xl mx-auto pt-8 pb-12 px-4">
-        <div className="flex flex-col items-center mb-12">
-          <h1 className="text-7xl font-extralight tracking-widest mb-4">EMOJIVAULT</h1>
-          <p className={`text-lg font-light tracking-wider ${isDarkMode ? 'text-purple-300/80' : 'text-indigo-600/80'}`}>
+        <div className="flex flex-col items-center mb-12 px-4">
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-extralight tracking-widest mb-4 text-center">EMOJIVAULT</h1>
+          <p className={`text-sm md:text-lg font-light tracking-wider text-center ${isDarkMode ? 'text-purple-300/80' : 'text-indigo-600/80'}`}>
             A CURATED COLLECTION OF DIGITAL EXPRESSIONS
           </p>
         </div>

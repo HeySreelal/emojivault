@@ -24,10 +24,6 @@
 
 Visit EMOJIVAULT: [https://emojivault.web.app](https://emojivault.web.app)
 
-## 📸 Screenshot
-
-![EMOJIVAULT Screenshot](/path/to/screenshot.png)
-
 ## 🛠️ Tech Stack
 
 EMOJIVAULT is built with modern web technologies:
