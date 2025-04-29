@@ -1,6 +1,15 @@
 import { CATEGORIES, Emoji, EmojiCategory } from "../emojis/data";
 
-// Function to filter emojis based on search and category
+/**
+ * Filters emoji list based on search terms and category selection.
+ * Supports partial word matching for better user experience while typing.
+ * Prevents false positive matches (e.g., "unhappy" won't match when searching for "happy").
+ * 
+ * @param {Emoji[]} emojis - The complete array of emoji objects to filter
+ * @param {string} searchTerm - User-provided search string (can contain multiple words)
+ * @param {EmojiCategory | null} selectedCategory - The currently selected emoji category filter
+ * @returns {Emoji[]} Filtered array of emoji objects matching both search and category criteria
+ */
 const filterEmojis = (
     emojis: Emoji[],
     searchTerm: string,
@@ -15,9 +24,35 @@ const filterEmojis = (
             return categoryMatch;
         }
 
-        // Otherwise check if search term is in emoji description (case insensitive)
-        const searchLower = searchTerm.toLowerCase();
-        return emoji.description.toLowerCase().includes(searchLower);
+        // Split the search term into individual words
+        const searchTerms = searchTerm.toLowerCase().split(/\s+/).filter(term => term.length > 0);
+
+        // If we have search terms, check if any of them match
+        if (searchTerms.length > 0) {
+            // Get all words from the description
+            const descriptionWords = emoji.description.toLowerCase().split(/\s+/).filter(word => word.length > 0);
+
+            return searchTerms.some(searchTerm => {
+                // Prevent matching substrings inside negative words
+                // Example: avoid matching "happy" inside "unhappy"
+                const negativeMatches = ['un', 'not', 'non'].some(prefix => {
+                    return descriptionWords.some(word =>
+                        word.startsWith(prefix) &&
+                        word.substring(prefix.length) === searchTerm
+                    );
+                });
+
+                if (negativeMatches) {
+                    return false;
+                }
+
+                // Check for word starts-with match (partial word matching)
+                // This ensures "hap" will match "happy"
+                return descriptionWords.some(word => word.startsWith(searchTerm));
+            });
+        }
+
+        return categoryMatch;
     });
 };
 
