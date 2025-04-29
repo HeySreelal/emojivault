@@ -1,4 +1,4 @@
-import { CATEGORIES, Emoji, EmojiCategory } from "../emojis/data";
+import { CATEGORIES, Emoji, EmojiCategory } from "../types/types";
 
 /**
  * Filters emoji list based on search terms and category selection.
