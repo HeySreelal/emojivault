@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Search, X, Heart, Sun, Moon } from "lucide-react";
-import { Emoji, emojis as emojiData } from "./emojis/data";
+import { categories, CATEGORIES, Emoji, EmojiCategory, emojis as emojiData } from "./emojis/data";
 import Notification, { NotificationProps } from "./components/Notification";
 import { copyEmojiToClipboard, filterEmojis } from "./utils/emojiUtils";
 import CategorySelector from "./components/CategorySelector";
@@ -13,12 +13,8 @@ const App: React.FC = () => {
   const emojis = useMemo(() => emojiData, []);
 
   // Extract unique categories and add "All" as the first option
-  const categories = useMemo(() => {
-    const uniqueCategories = Array.from(new Set(emojiData.map(emoji => emoji.category)));
-    return ["All", ...uniqueCategories];
-  }, []);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedCategory, setSelectedCategory] = useState<EmojiCategory | null>(CATEGORIES.ALL);
   const [loading, setLoading] = useState<boolean>(true);
   const [notification, setNotification] = useState<NotificationProps | null>(null);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Default to dark mode for luxury feel
@@ -129,7 +125,7 @@ const App: React.FC = () => {
         {/* Controls section */}
         <div className="flex justify-between items-center mb-8 px-4">
           <CategorySelector
-            categories={categories}
+            categories={Object.values(categories)}
             selectedCategory={selectedCategory}
             onSelect={setSelectedCategory}
             isDarkMode={isDarkMode}

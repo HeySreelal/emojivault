@@ -1,14 +1,14 @@
-import { Emoji } from "../emojis/data";
+import { CATEGORIES, Emoji, EmojiCategory } from "../emojis/data";
 
 // Function to filter emojis based on search and category
 const filterEmojis = (
     emojis: Emoji[],
     searchTerm: string,
-    selectedCategory: string
+    selectedCategory: EmojiCategory | null
 ): Emoji[] => {
     return emojis.filter(emoji => {
         // First check if emoji matches the category filter
-        const categoryMatch = selectedCategory === "All" || emoji.category === selectedCategory;
+        const categoryMatch = selectedCategory === CATEGORIES.ALL || emoji.category === selectedCategory;
 
         // If no search term or category doesn't match, just return category match
         if (!searchTerm.trim() || !categoryMatch) {
