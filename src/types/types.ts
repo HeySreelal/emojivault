@@ -9,6 +9,7 @@ export const CATEGORIES = {
     SMILEYS: new EmojiCategory('😊', 'Smileys'),
     GESTURES: new EmojiCategory('🫶', 'Gestures'),
     PEOPLE: new EmojiCategory('👥', 'People'),
+    CLOTHING: new EmojiCategory('👚', 'Clothing & Accessories'),
 };
 
 // Generate the categories map dynamically from CATEGORIES
@@ -25,3 +26,4 @@ export const E = (emoji: string, description: string, category: EmojiCategory): 
 export const ES = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.SMILEYS);
 export const EG = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.GESTURES);
 export const EP = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.PEOPLE);
+export const EC = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.CLOTHING);
