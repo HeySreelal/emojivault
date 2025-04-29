@@ -1,152 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Search, X, Heart, Sun, Moon } from "lucide-react";
 import { Emoji, emojis as emojiData } from "./emojis/data";
-
-
-// Component for displaying a notification
-interface NotificationProps {
-  message: string;
-  emoji?: string;
-}
-
-const Notification: React.FC<NotificationProps> = ({ message, emoji }) => {
-  return (
-    <div
-      className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-8 py-4 rounded-full flex items-center z-50 shadow-2xl backdrop-blur-md"
-      style={{ animation: "floatUp 0.5s cubic-bezier(0.22, 1, 0.36, 1)" }}
-    >
-      {emoji && <span className="text-2xl mr-3">{emoji}</span>}
-      <span className="font-light tracking-wide">{message}</span>
-    </div>
-  );
-};
-
-// Component for a single emoji display in the luxury format
-interface EmojiDisplayProps {
-  emoji: Emoji;
-  onCopy: (emoji: Emoji) => void;
-  isDarkMode: boolean;
-}
-
-const EmojiDisplay: React.FC<EmojiDisplayProps> = ({ emoji, onCopy, isDarkMode }) => {
-  return (
-    <div
-      onClick={() => onCopy(emoji)}
-      className={`group cursor-pointer relative overflow-hidden transition-all duration-500 ease-out
-        hover:scale-105 hover:z-10 ${isDarkMode ? 'hover:shadow-purple-500/30' : 'hover:shadow-indigo-500/30'} 
-        hover:shadow-xl backdrop-blur-sm p-6 rounded-3xl 
-        ${isDarkMode ? 'bg-gradient-to-br from-gray-900/40 to-purple-900/40' : 'bg-gradient-to-br from-white/40 to-indigo-50/40'}
-        border ${isDarkMode ? 'border-purple-900/50' : 'border-indigo-100/80'}`}
-      title={`${emoji.description} - Click to copy`}
-    >
-      <div className="flex items-center justify-center aspect-square">
-        <div className="transform transition-all duration-500 ease-out group-hover:scale-125 group-hover:-translate-y-1">
-          <span className="text-6xl filter drop-shadow-sm">{emoji.emoji}</span>
-        </div>
-      </div>
-
-      <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 bg-gradient-to-tr 
-        ${isDarkMode ? 'from-purple-800 to-indigo-600' : 'from-indigo-400 to-purple-300'} 
-        transition-opacity duration-500 rounded-3xl`}></div>
-    </div>
-  );
-};
-
-// Category selector component with luxury styling
-interface CategorySelectorProps {
-  categories: string[];
-  selectedCategory: string;
-  onSelect: (category: string) => void;
-  isDarkMode: boolean;
-}
-
-const CategorySelector: React.FC<CategorySelectorProps> = ({
-  categories,
-  selectedCategory,
-  onSelect,
-  isDarkMode
-}) => {
-  // Get emoji for category
-  const getCategoryEmoji = (category: string): string => {
-    switch (category) {
-      case "All":
-        return "✨";
-      case "Smileys":
-        return "😊";
-      default:
-        return "🔍";
-    }
-  };
-
-  return (
-    <div className="overflow-x-auto py-2 no-scrollbar">
-      <div className="flex gap-3">
-        {categories.map(category => {
-          const isSelected = selectedCategory === category;
-          const displayName = category === "All" ? "All" : category;
-
-          return (
-            <button
-              key={category}
-              onClick={() => onSelect(category)}
-              className={`whitespace-nowrap px-6 py-3 rounded-full text-sm font-light tracking-wide transition-all duration-300
-                ${isSelected
-                  ? isDarkMode
-                    ? 'bg-gradient-to-r from-purple-800 to-indigo-700 text-white shadow-lg shadow-purple-600/20'
-                    : 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
-                  : isDarkMode
-                    ? 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/70'
-                    : 'bg-white/50 hover:bg-white/80 text-gray-700 border border-gray-200/50'
-                }`}
-            >
-              <span className="mr-2">{getCategoryEmoji(category)}</span>
-              {displayName}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-// Loading animation component
-const LoadingAnimation: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => (
-  <div className="flex flex-col justify-center items-center h-64">
-    <div className="relative w-24 h-24">
-      <div className={`absolute top-0 left-0 w-full h-full rounded-full ${isDarkMode ? 'border-4 border-purple-800/30' : 'border-4 border-indigo-200/50'}`}></div>
-      <div className={`absolute top-0 left-0 w-full h-full rounded-full ${isDarkMode ? 'border-t-4 border-l-4 border-purple-400' : 'border-t-4 border-l-4 border-indigo-600'} animate-spin`}></div>
-    </div>
-    <p className={`mt-8 text-lg font-light tracking-widest ${isDarkMode ? 'text-purple-300' : 'text-indigo-600'}`}>
-      CURATING COLLECTION
-    </p>
-  </div>
-);
-
-// Function to filter emojis based on search and category
-const filterEmojis = (
-  emojis: Emoji[],
-  searchTerm: string,
-  selectedCategory: string
-): Emoji[] => {
-  return emojis.filter(emoji => {
-    // First check if emoji matches the category filter
-    const categoryMatch = selectedCategory === "All" || emoji.category === selectedCategory;
-
-    // If no search term or category doesn't match, just return category match
-    if (!searchTerm.trim() || !categoryMatch) {
-      return categoryMatch;
-    }
-
-    // Otherwise check if search term is in emoji description (case insensitive)
-    const searchLower = searchTerm.toLowerCase();
-    return emoji.description.toLowerCase().includes(searchLower);
-  });
-};
-
-// Function to copy emoji to clipboard
-const copyEmojiToClipboard = async (emoji: string): Promise<void> => {
-  return navigator.clipboard.writeText(emoji);
-};
+import Notification, { NotificationProps } from "./components/Notification";
+import { copyEmojiToClipboard, filterEmojis } from "./utils/emojiUtils";
+import CategorySelector from "./components/CategorySelector";
+import Loading from "./components/Loading";
+import EmojiDisplay from "./components/EmojiDisplay";
 
 // Main App component
 const App: React.FC = () => {
@@ -291,7 +150,7 @@ const App: React.FC = () => {
         {/* Emoji Gallery */}
         <div className="px-4">
           {loading ? (
-            <LoadingAnimation isDarkMode={isDarkMode} />
+            <Loading isDarkMode={isDarkMode} />
           ) : filteredEmojis.length > 0 ? (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">

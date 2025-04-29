@@ -1,5 +1,5 @@
 /** The Emoji Category */
-export type EmojiCategory = "Smileys";
+export type EmojiCategory = "Smileys" | "Gestures";
 
 /** The Emoji Class */
 export class Emoji { constructor(public emoji: string, public description: string, public category: EmojiCategory) { } }
@@ -9,6 +9,8 @@ export const E = (emoji: string, description: string, category: EmojiCategory): 
 
 /**  Create a Smiley Emoji */
 export const ES = (emoji: string, description: string): Emoji => new Emoji(emoji, description, "Smileys")
+/**  Create a Gesture Emoji */
+export const EG = (emoji: string, description: string): Emoji => new Emoji(emoji, description, "Gestures")
 
 export const emojis: Emoji[] = [
     // Faces - Smileys and emotions
@@ -135,5 +137,66 @@ export const emojis: Emoji[] = [
     ES("😽", "Kissing Cat"),
     ES("🙀", "Weary Cat"),
     ES("😿", "Crying Cat"),
-    ES("😾", "Pouting Cat")
+    ES("😾", "Pouting Cat"),
+    EG("🫶", "heart hands love care affection relationship support"),
+    EG("🤲", "palms up together prayer beg plead request mercy"),
+    EG("👐", "open hands welcome embrace acceptance offering"),
+    EG("🙌", "raising hands celebration hooray yay praise worship"),
+    EG("👏", "clapping hands applause bravo congratulations appreciation"),
+    EG("🤝", "handshake deal agreement meeting greet partner business"),
+    EG("👍", "thumbs up approve like good yes agree positive"),
+    EG("👎", "thumbs down disapprove dislike bad no disagree negative"),
+    EG("👊", "oncoming fist bump punch power solidarity strong"),
+    EG("✊", "raised fist power strength resistance solidarity protest"),
+    EG("🤛", "left-facing fist bump greeting solidarity leftward"),
+    EG("🤜", "right-facing fist bump greeting solidarity rightward"),
+    EG("🫷", "rightwards pushing hand move reject refuse push away"),
+    EG("🫸", "leftwards pushing hand move reject refuse push away"),
+    EG("🤞", "crossed fingers luck hope wish liar promise"),
+    EG("✌️", "victory hand peace v sign scissors two"),
+    EG("🫰", "hand with index finger and thumb crossed money cash payment"),
+    EG("🤟", "love-you gesture rock ILY ASL sign language"),
+    EG("🤘", "sign of the horns rock metal music concert cool"),
+    EG("👌", "OK hand perfect good approval agree excellent"),
+    EG("🤌", "pinched fingers italian hand gesture what do you want"),
+    EG("🤏", "pinching hand small tiny little bit almost there"),
+    EG("🫳", "palm down hand drop give place put"),
+    EG("🫴", "palm up hand hold carry receive offer lift"),
+    EG("👈", "backhand index pointing left direction here look"),
+    EG("👉", "backhand index pointing right direction here look"),
+    EG("👆", "backhand index pointing up direction here look above"),
+    EG("👇", "backhand index pointing down direction here look below"),
+    EG("☝️", "index pointing up attention important one moment wait"),
+    EG("✋", "raised hand high five stop halt wait"),
+    EG("🤚", "raised back of hand wave greeting volunteering"),
+    EG("🖐", "hand with fingers splayed stop high five spread"),
+    EG("🖖", "vulcan salute star trek spock live long prosper"),
+    EG("👋", "waving hand hello goodbye hi greetings"),
+    EG("🤙", "call me hand phone contact surf shaka hang loose"),
+    EG("🫲", "leftwards hand reach give receive pass"),
+    EG("🫱", "rightwards hand reach give receive pass"),
+    EG("💪", "flexed biceps strong strength muscle gym power workout"),
+    EG("🦾", "mechanical arm robot prosthetic strength cyborg"),
+    EG("🖕", "middle finger rude offensive swear curse angry"),
+    EG("✍️", "writing hand write note draw signature author"),
+    EG("🙏", "folded hands please thank you pray beg hope wish"),
+    EG("🫵", "index pointing at the viewer you point direct choose"),
+    EG("🦶", "foot walking run kick toe sole"),
+    EG("🦵", "leg kick walking running standing limb"),
+    EG("🦿", "mechanical leg prosthetic robot artificial limb"),
+    EG("💄", "lipstick makeup cosmetic beauty fashion"),
+    EG("💋", "kiss mark love affection lips romance xoxo"),
+    EG("👄", "mouth lips speak talk kiss eat"),
+    EG("🫦", "biting lip flirt tease nervous anxious sexy"),
+    EG("🦷", "tooth dentist smile mouth hygiene dental"),
+    EG("👅", "tongue taste lick speak eat flavor"),
+    EG("👂", "ear hear listen sound music"),
+    EG("🦻", "ear with hearing aid deaf accessibility sound hearing"),
+    EG("👃", "nose smell scent breathe sniff"),
+    EG("👣", "footprints walking steps tracks trail path"),
+    EG("👁", "eye look see vision sight watch"),
+    EG("👀", "eyes look watch see stare peek"),
+    EG("🫀", "anatomical heart organ human body medical health"),
+    EG("🫁", "lungs breathing organ human body medical health"),
+    EG("🧠", "brain mind thinking intelligence smart memory")
 ];
