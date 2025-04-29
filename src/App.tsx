@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<EmojiCategory | null>(CATEGORIES.ALL);
   const [loading, setLoading] = useState<boolean>(true);
   const [notification, setNotification] = useState<NotificationProps | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Default to dark mode for luxury feel
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
   const [showIntro, setShowIntro] = useState<boolean>(true);
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
 

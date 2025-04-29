@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;  /* Chrome, Safari and Opera */
+    }
+}
+
+
+/* For Webkit browsers (Chrome, Safari, newer versions of Opera) */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: linear-gradient(to bottom, #4c1d95, #312e81);
+}
+
+::-webkit-scrollbar-thumb {
+    background: wheat;
+    border-radius: 10px;
+    border: 3px solid rgba(30, 30, 46, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #6d28d9, #4338ca);
+}

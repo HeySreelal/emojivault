@@ -1,5 +1,5 @@
 import React from 'react';
-import { EmojiCategory } from '../emojis/data';
+import { EmojiCategory } from '../types/types';
 
 
 // Updated props to use your EmojiCategory class
@@ -17,8 +17,8 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
     isDarkMode
 }) => {
     return (
-        <div className="overflow-x-auto py-2 no-scrollbar">
-            <div className="flex gap-3">
+        <div className="overflow-x-auto scrollbar-hide py-2">
+            <div className="flex gap-3 pb-1">
                 {categories.map(category => {
                     const isSelected = category === selectedCategory;
 
