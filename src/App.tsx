@@ -33,7 +33,7 @@ const App: React.FC = () => {
       setLoading(false);
       // Hide intro after data loads + small delay for animation
       setTimeout(() => setShowIntro(false), 1000);
-    }, 1500);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -73,10 +73,9 @@ const App: React.FC = () => {
   if (showIntro) {
     return (
       <div className={`${mainBackground} min-h-screen flex items-center justify-center transition-colors duration-500`}>
-        <div className="text-center">
-          <div className="text-9xl mb-6 animate-bounce">✨</div>
-          <h1 className="text-6xl font-thin tracking-widest mb-4">EMOJIVAULT</h1>
-          <p className={`text-lg font-light tracking-wide ${isDarkMode ? 'text-purple-300' : 'text-indigo-600'}`}>
+        <div className="flex flex-col items-center justify-center text-center">
+          <img src="/logo.png" alt="Logo" className="w-48 h-48 mb-8 animate-bounce" />
+          <p className={`text-2xl font-light tracking-wide ${isDarkMode ? 'text-purple-300' : 'text-indigo-600'}`}>
             Curating your premium emoji experience...
           </p>
         </div>
