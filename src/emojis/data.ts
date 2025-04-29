@@ -1,29 +1,4 @@
-/** The Emoji Category */
-export class EmojiCategory {
-    constructor(public emoji: string, public name: string) { }
-}
-
-// Define categories only once
-export const CATEGORIES = {
-    ALL: new EmojiCategory('✨', 'All'),
-    SMILEYS: new EmojiCategory('😊', 'Smileys'),
-    GESTURES: new EmojiCategory('🫶', 'Gestures'),
-    // Add more categories as needed
-};
-
-// Generate the categories map dynamically from CATEGORIES
-export const categories: Record<string, EmojiCategory> = {};
-Object.values(CATEGORIES).forEach(category => {
-    categories[category.name] = category;
-});
-
-/** The Emoji Class */
-export class Emoji { constructor(public emoji: string, public description: string, public category: EmojiCategory) { } }
-
-// Shorthand methods
-export const E = (emoji: string, description: string, category: EmojiCategory): Emoji => new Emoji(emoji, description, category);
-export const ES = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.SMILEYS);
-export const EG = (emoji: string, description: string): Emoji => new Emoji(emoji, description, CATEGORIES.GESTURES);
+import { Emoji, ES, EG, EP } from "../types/types";
 
 export const emojis: Emoji[] = [
     // Faces - Smileys and emotions
@@ -213,5 +188,62 @@ export const emojis: Emoji[] = [
     EG("👀", "eyes look watch see stare peek"),
     EG("🫀", "anatomical heart organ human body medical health"),
     EG("🫁", "lungs breathing organ human body medical health"),
-    EG("🧠", "brain mind thinking intelligence smart memory")
+    EG("🧠", "brain mind thinking intelligence smart memory"),
+
+    // People emojis
+    EP("🗣", "speaking head talk chat speak voice announce"),
+    EP("👤", "bust in silhouette person user profile shadow"),
+    EP("👥", "busts in silhouette people users group shadow team"),
+    EP("🫂", "people hugging embrace comfort support friends"),
+    EP("👶", "baby infant newborn child young toddler"),
+    EP("👧", "girl child young female kid daughter"),
+    EP("🧒", "child young kid gender-neutral youth"),
+    EP("👦", "boy child young male kid son"),
+    EP("👩", "woman female adult person lady"),
+    EP("🧑", "person adult gender-neutral human"),
+    EP("👨", "man male adult person guy"),
+    EP("👩‍🦱", "woman with curly hair female curls adult"),
+    EP("🧑‍🦱", "person with curly hair curls gender-neutral adult"),
+    EP("👨‍🦱", "man with curly hair male curls adult"),
+    EP("👩‍🦰", "woman with red hair female redhead ginger adult"),
+    EP("🧑‍🦰", "person with red hair redhead ginger gender-neutral"),
+    EP("👨‍🦰", "man with red hair male redhead ginger adult"),
+    EP("👱‍♀️", "woman with blonde hair female blonde hair adult"),
+    EP("👱", "person with blonde hair blonde hair gender-neutral"),
+    EP("👱‍♂️", "man with blonde hair male blonde hair adult"),
+    EP("👩‍🦳", "woman with white hair female elderly gray hair adult"),
+    EP("🧑‍🦳", "person with white hair elderly gray hair gender-neutral"),
+    EP("👨‍🦳", "man with white hair male elderly gray hair adult"),
+    EP("👩‍🦲", "woman with bald head female hairless adult"),
+    EP("🧑‍🦲", "person with bald head gender-neutral hairless adult"),
+    EP("👨‍🦲", "man with bald head male hairless adult"),
+    EP("🧔‍♀️", "woman with beard female facial hair adult"),
+    EP("🧔", "person with beard facial hair adult"),
+    EP("🧔‍♂️", "man with beard male facial hair adult"),
+    EP("👵", "old woman elderly female senior grandmother"),
+    EP("🧓", "older person elderly senior gender-neutral adult"),
+    EP("👴", "old man elderly male senior grandfather"),
+    EP("👲", "person with skullcap hat cap male headwear"),
+    EP("👳‍♀️", "woman wearing turban female headwear religious"),
+    EP("👳", "person wearing turban headwear religious gender-neutral"),
+    EP("👳‍♂️", "man wearing turban male headwear religious"),
+    EP("🧕", "woman with headscarf hijab religious female"),
+    EP("👮‍♀️", "woman police officer female cop law enforcement"),
+    EP("👮", "police officer cop law enforcement gender-neutral"),
+    EP("👮‍♂️", "man police officer male cop law enforcement"),
+    EP("👷‍♀️", "woman construction worker female builder hard hat"),
+    EP("👷", "construction worker builder hard hat gender-neutral"),
+    EP("👷‍♂️", "man construction worker male builder hard hat"),
+    EP("💂‍♀️", "woman guard female security royal uniform"),
+    EP("💂", "guard security royal uniform gender-neutral"),
+    EP("💂‍♂️", "man guard male security royal uniform"),
+    EP("🕵️‍♀️", "woman detective female spy investigate"),
+    EP("🕵️", "detective spy investigate gender-neutral sleuth"),
+    EP("🕵️‍♂️", "man detective male spy investigate"),
+    EP("👩‍⚕️", "woman health worker female doctor nurse medical"),
+    EP("🧑‍⚕️", "health worker doctor nurse medical gender-neutral"),
+    EP("👨‍⚕️", "man health worker male doctor nurse medical"),
+    EP("👩‍🌾", "woman farmer female agriculture gardening"),
+    EP("🧑‍🌾", "farmer agriculture gardening gender-neutral"),
+    EP("👨‍🌾", "man farmer male agriculture gardening")
 ];

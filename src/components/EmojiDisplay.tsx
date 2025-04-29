@@ -1,4 +1,4 @@
-import { Emoji } from "../emojis/data";
+import { Emoji } from "../types/types";
 
 // Component for a single emoji display in the luxury format
 interface EmojiDisplayProps {

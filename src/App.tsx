@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Search, X, Heart, Sun, Moon } from "lucide-react";
-import { categories, CATEGORIES, Emoji, EmojiCategory, emojis as emojiData } from "./emojis/data";
+import { categories, CATEGORIES, Emoji, EmojiCategory } from "./types/types";
+import { emojis as emojiData } from "./emojis/data";
 import Notification, { NotificationProps } from "./components/Notification";
 import { copyEmojiToClipboard, filterEmojis } from "./utils/emojiUtils";
 import CategorySelector from "./components/CategorySelector";
