@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import { EmojiCategory } from '../types/types';
+import { analytics } from '../config/firebase';
+import { logEvent } from 'firebase/analytics';
 
 // Updated props to use your EmojiCategory class
 interface CategorySelectorProps {
@@ -17,7 +19,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollContainerRef.current) {
-            const scrollAmount = 300; // Adjust this value based on your needs
+            const scrollAmount = 300;
             const currentScroll = scrollContainerRef.current.scrollLeft;
 
             scrollContainerRef.current.scrollTo({
@@ -26,7 +28,24 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                     : currentScroll + scrollAmount,
                 behavior: 'smooth'
             });
+
+            // Track scroll event
+            logEvent(analytics, 'category_scroll', {
+                direction: direction,
+                current_category: selectedCategory?.name || 'none'
+            });
         }
+    };
+
+    const handleCategorySelect = (category: EmojiCategory) => {
+        // Track category selection event
+        logEvent(analytics, 'category_selected', {
+            category_name: category.name,
+            category_emoji: category.emoji,
+            previous_category: selectedCategory?.name || 'none'
+        });
+
+        onSelect(category);
     };
 
     return (
@@ -34,7 +53,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
             {/* Left chevron */}
             <button
                 onClick={() => scroll('left')}
-                className={`absolute left-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md bg-gray-800 text-gray-200 hover:bg-gray-700`}
+                className="absolute left-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md bg-gray-800 text-gray-200 hover:bg-gray-700"
                 aria-label="Scroll left"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -54,7 +73,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                         return (
                             <button
                                 key={category.name ?? 'all'}
-                                onClick={() => onSelect(category)}
+                                onClick={() => handleCategorySelect(category)}
                                 className={`whitespace-nowrap px-6 py-3 rounded-full text-sm font-light tracking-wide transition-all duration-300
                                     ${isSelected
                                         ? 'bg-gradient-to-r from-purple-800 to-indigo-700 text-white shadow-lg shadow-purple-600/20'
@@ -72,7 +91,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
             {/* Right chevron */}
             <button
                 onClick={() => scroll('right')}
-                className={`absolute right-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md bg-gray-800 text-gray-200 hover:bg-gray-700`}
+                className="absolute right-0 z-10 flex items-center justify-center w-8 h-8 rounded-full shadow-md bg-gray-800 text-gray-200 hover:bg-gray-700"
                 aria-label="Scroll right"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

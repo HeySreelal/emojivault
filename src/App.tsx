@@ -7,7 +7,8 @@ import { copyEmojiToClipboard, filterEmojis } from "./utils/emojiUtils";
 import CategorySelector from "./components/CategorySelector";
 import Loading from "./components/Loading";
 import EmojiDisplay from "./components/EmojiDisplay";
-
+import { analytics } from "./config/firebase";
+import { logEvent } from "firebase/analytics";
 
 // Main App component
 const App: React.FC = () => {
@@ -21,11 +22,19 @@ const App: React.FC = () => {
   const [notification, setNotification] = useState<NotificationProps | null>(null);
   const [showIntro, setShowIntro] = useState<boolean>(true);
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
+  const [searchInitiated, setSearchInitiated] = useState<boolean>(false);
 
   // Show notification and automatically hide it after a delay
   const showNotification = useCallback((message: string, emoji?: string): void => {
     setNotification({ message, emoji });
     setTimeout(() => setNotification(null), 2000);
+  }, []);
+
+  // Log app_open event when the component mounts
+  useEffect(() => {
+    logEvent(analytics, 'app_open', {
+      timestamp: new Date().toISOString()
+    });
   }, []);
 
   // Simulate loading for a brief period to show intro screen
@@ -50,27 +59,72 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Log search event when searchTerm changes (with debounce)
+  useEffect(() => {
+    if (searchTerm && searchTerm.length > 0) {
+      setSearchInitiated(true);
+      const timer = setTimeout(() => {
+        logEvent(analytics, 'search', {
+          search_term: searchTerm,
+          current_category: selectedCategory?.name || 'All',
+          results_count: filterEmojis(emojis, searchTerm, selectedCategory).length
+        });
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [searchTerm, selectedCategory, emojis]);
+
   // Handle copying emoji to clipboard
   const handleCopyEmoji = useCallback(async (emoji: Emoji): Promise<void> => {
     try {
       await copyEmojiToClipboard(emoji.emoji);
+
+      // Track emoji copy event
+      logEvent(analytics, 'emoji_copied', {
+        emoji: emoji.emoji,
+        emoji_description: emoji.description,
+        emoji_category: emoji.category.name,
+        search_term: searchTerm || 'none'
+      });
+
       showNotification(`Emoji copied to your clipboard`, emoji.emoji);
     } catch {
+      logEvent(analytics, 'emoji_copy_failed', {
+        emoji: emoji.emoji
+      });
       showNotification("Failed to copy emoji");
     }
-  }, [showNotification]);
+  }, [showNotification, searchTerm]);
 
   // Clear search field
   const clearSearch = useCallback((): void => {
+    if (searchInitiated) {
+      logEvent(analytics, 'search_cleared', {
+        previous_search: searchTerm
+      });
+      setSearchInitiated(false);
+    }
     setSearchTerm("");
-  }, []);
-
+  }, [searchTerm, searchInitiated]);
 
   // Scroll to top function
   const scrollToTop = useCallback((): void => {
+    logEvent(analytics, 'scroll_to_top', {
+      scroll_position: window.scrollY
+    });
+
     window.scrollTo({
       top: 0,
       behavior: "smooth"
+    });
+  }, []);
+
+  // Track external link clicks
+  const handleExternalLinkClick = useCallback((linkName: string, url: string): void => {
+    logEvent(analytics, 'external_link_click', {
+      link_name: linkName,
+      url: url
     });
   }, []);
 
@@ -214,6 +268,7 @@ const App: React.FC = () => {
             className="text-blue-400 hover:text-blue-300 font-medium"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => handleExternalLinkClick('github_profile', 'https://github.com/heysreelal')}
           >
             @HeySreelal
           </a>
@@ -223,6 +278,7 @@ const App: React.FC = () => {
             className="text-blue-400 hover:text-blue-300 font-medium"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => handleExternalLinkClick('github_repo', 'https://github.com/heysreelal/emojivault')}
           >
             Open Source
           </a>
