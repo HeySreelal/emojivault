@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Search, X, Heart, ArrowUp } from "lucide-react";
 import { categories, CATEGORIES, Emoji, EmojiCategory } from "./types/types";
 import { emojis as emojiData } from "./emojis/data";
@@ -24,16 +24,20 @@ const App: React.FC = () => {
   const [showScrollToTop, setShowScrollToTop] = useState<boolean>(false);
   const [searchInitiated, setSearchInitiated] = useState<boolean>(false);
 
+  // Create a ref for the search input
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
   // Show notification and automatically hide it after a delay
   const showNotification = useCallback((message: string, emoji?: string): void => {
     setNotification({ message, emoji });
     setTimeout(() => setNotification(null), 2000);
   }, []);
 
+
   // Log app_open event when the component mounts
   useEffect(() => {
     logEvent(analytics, 'app_open', {
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }, []);
 
@@ -46,6 +50,27 @@ const App: React.FC = () => {
     }, 1000);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Add keyboard shortcut listener for "/"
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Only focus if "/" is pressed and user is not typing in an input field
+      if (e.key === "/" &&
+        document.activeElement?.tagName !== "INPUT" &&
+        document.activeElement?.tagName !== "TEXTAREA") {
+        e.preventDefault(); // Prevent "/" from being entered in the input
+        searchInputRef.current?.focus();
+
+        // Log shortcut usage
+        logEvent(analytics, 'keyboard_shortcut_used', {
+          shortcut: 'slash_to_search'
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   // Handle scroll events to show/hide the scroll to top button
@@ -106,6 +131,7 @@ const App: React.FC = () => {
       setSearchInitiated(false);
     }
     setSearchTerm("");
+    searchInputRef.current?.focus();
   }, [searchTerm, searchInitiated]);
 
   // Scroll to top function
@@ -163,12 +189,13 @@ const App: React.FC = () => {
         </div>
 
         {/* Search bar with luxury styling */}
-        <div className="bg-gray-900/50 backdrop-blur-md rounded-full shadow-xl transition-all duration-300 max-w-3xl mx-auto">
+        <div className="bg-gray-900/50 backdrop-blur-md rounded-full shadow-xl transition-all duration-300 max-w-3xl mx-auto relative">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-purple-400" />
             </div>
             <input
+              ref={searchInputRef}
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -184,6 +211,11 @@ const App: React.FC = () => {
                 <X className="h-5 w-5 text-gray-400 hover:text-purple-400 transition-colors" />
               </button>
             )}
+          </div>
+          {/* Keyboard shortcut indicator */}
+          <div className="absolute right-0 -bottom-8 text-xs text-gray-500 font-light tracking-wide flex items-center">
+            <span className="px-2 py-1 bg-gray-800/50 rounded-md mr-2">/</span>
+            <span>to focus search</span>
           </div>
         </div>
       </header>
